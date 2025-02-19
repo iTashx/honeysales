@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario</title>
+    <link rel="stylesheet" href="gestion_inventario.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menú</h2>
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#" class="active">Gestión de Inventario</a></li>
+            <li><a href="#">Gestión de Ventas</a></li>
+            <li><a href="#">Gestión de Usuarios</a></li>
+            <li><a href="#">Reportes</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <h1>Gestión de Inventario</h1>
+        <button id="add-product-btn" onclick="window.location.href='añadir_producto.html'">Añadir Producto</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="product-table-body">
+                <!-- Los productos se cargarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="gestion_inventario.js"></script>
+</body>
+</html>
+
+<style>
+    body {
+        display: flex;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .sidebar {
+        width: 200px;
+        background: #333;
+        color: white;
+        height: 100vh;
+        padding: 15px;
+    }
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+    .sidebar ul li {
+        margin: 15px 0;
+    }
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+    }
+    .sidebar ul li a.active {
+        font-weight: bold;
+    }
+    .content {
+        flex: 1;
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    #add-product-btn {
+        background-color: green;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        cargarProductos();
+    });
+
+    function cargarProductos() {
+        const productos = [
+            { id: 1, nombre: "Torta Chocolate", descripcion: "Deliciosa torta de chocolate", precio: 15.99, stock: 10 },
+            { id: 2, nombre: "Ración Vainilla", descripcion: "Ración de pastel de vainilla", precio: 5.99, stock: 20 }
+        ];
+
+        const tbody = document.getElementById("product-table-body");
+        tbody.innerHTML = "";
+
+        productos.forEach(producto => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${producto.id}</td>
+                <td>${producto.nombre}</td>
+                <td>${producto.descripcion}</td>
+                <td>$${producto.precio}</td>
+                <td>${producto.stock}</td>
+                <td>
+                    <button onclick="editarProducto(${producto.id})">Editar</button>
+                    <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
+                </td>
+            `;
+            tbody.appendChild(fila);
+        });
+    }
+
+    function editarProducto(id) {
+        alert("Editar producto " + id);
+    }
+
+    function eliminarProducto(id) {
+        alert("Eliminar producto " + id);
+    }
+</script>

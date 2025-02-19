@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir Producto</title>
+    <link rel="stylesheet" href="../css/añadir_producto.css">
+</head>
+<body>
+        <div class="sidebar">
+            <div class="logo">LOGO</div>
+            <nav>
+                <ul>
+                    <li><a href="menu.html">Menú</a></li>
+                    <li class="active"><a href="ventas.html">Ventas</a></li>
+                    <li><a href="inventario.html">Inventario</a></li>
+                    <li><a href="usuarios.html">Usuarios</a></li>
+                    <li><a href="reportes.html">Reportes</a></li>
+                </ul>
+            </nav>
+            <button class="logout">Cerrar sesión</button>
+        </div>
+        <main class="content">
+            <h1>Añadir Producto</h1>
+            <form id="productForm" action="add_product.php" method="POST">
+                <label for="nombre_prod">Nombre del Producto:</label>
+                <input type="text" id="nombre_prod" name="nombre_prod" required>
+                
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion"></textarea>
+                
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" step="0.01" required>
+                
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" required>
+                
+                <button type="submit">Añadir Producto</button>
+            </form>
+        </main>
+    <script src="../js/añadir_producto.js"></script>
+</body>
+</html>

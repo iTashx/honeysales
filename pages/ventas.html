@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Ventas</title>
+    <link rel="stylesheet" href="../css/ventas.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">LOGO</div>
+        <nav>
+            <ul>
+                <li><a href="menu.html">Menú</a></li>
+                <li class="active"><a href="ventas.html">Ventas</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="usuarios.html">Usuarios</a></li>
+            </ul>
+        </nav>
+        <button class="logout">Cerrar sesión</button>
+    </div>
+    <main>
+        <header>
+            <h1>Gestión de Ventas</h1>
+            <div class="user-profile">
+                <span class="notification-icon">🔔</span>
+                <img src="../img/user.png" alt="Usuario" class="user-icon">
+            </div>
+        </header>
+        <section class="ventas-container">
+            <div class="productos-lista" id="productos-lista">
+                <!-- Los productos se cargarán aquí dinámicamente -->
+            </div>
+            <div class="carrito">
+                <h2>Carrito</h2>
+                <ul id="carrito-lista"></ul>
+                <div class="resumen">
+                    <p>Subtotal: <span id="subtotal">$0.00</span></p>
+                    <p>Total: <span id="total">$0.00</span></p>
+                    <button id="checkout">Checkout</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Referencia al script de ventas.js -->
+    <script defer src="../js/ventas.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* Reseteo de márgenes y padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo de la página */
+body {
+    background-color: #CBD38C;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Sección del logo */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+
+/* Estilo del logo */
+.logo {
+    background-color: #FFC107;
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor de botones */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3vh;
+}
+
+/* Estilo de los botones */
+.menu-btn {
+    background-color: #F8F5D7;
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 1.2rem 2rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Efecto hover */
+.menu-btn:hover {
+    background-color: #E1D6A1;
+}
+
+/* Estilo de los íconos */
+.menu-btn i {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .menu-btn {
+        width: 150px;
+        height: 150px;
+        font-size: 0.8rem;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+}

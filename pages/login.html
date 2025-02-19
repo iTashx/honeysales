@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <script defer src="../js/login.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="../assets/images/logo.png" alt="Logo">
+        </div>
+        <h2>Iniciar sesión</h2>
+        <p>Ingrese sus credenciales para continuar</p>
+        <form action="../backend/login.php" method="POST">
+            <label for="username">Usuario</label>
+            <input type="text" id="username" name="username" placeholder="Ingrese su nombre de usuario" required>
+
+            <label for="contraseña">Contraseña</label>
+            <div class="password-container">
+                <input type="password" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
+                <span class="eye-icon" onclick="togglePassword()"></span>
+            </div>
+
+            <div class="options">
+                <label>
+                    <input type="checkbox" id="remember"> Recordarme
+                </label>
+                <a href="#" class="forgot-password">¿Olvidó su contraseña?</a>
+            </div>
+
+            <button type="submit">Iniciar sesión</button>
+        </form>
+    </div>
+</body>
+</html>

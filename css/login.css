@@ -1,0 +1,101 @@
+/* Configuración global */
+body {
+    background-color: #D3DA9E;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Contenedor principal */
+.login-container {
+    width: 400px;
+    background-color: #F6F2D4;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+/* Logo */
+.logo {
+    width: 80px;
+    height: 80px;
+    background-color: #FFC107;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.logo img {
+    width: 60px;
+}
+
+/* Campos de entrada */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+/* Contenedor de la contraseña */
+.password-container {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.eye-icon::before {
+    content: "👁️";
+    font-size: 16px;
+}
+
+/* Opciones adicionales */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.forgot-password {
+    text-decoration: none;
+    color: #333;
+}
+
+/* Botón */
+button {
+    width: 100%;
+    background-color: #FFC107;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #E0A800;
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+    }
+}
