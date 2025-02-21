@@ -40,9 +40,46 @@ if ($mysqli->connect_error) {
 $mysqli->begin_transaction();
 
 try {
+    // Verificar si el cliente ya existe en la base de datos
+    $stmt = $mysqli->prepare("SELECT nombre, apellido FROM PERSONA WHERE ci = ?");
+    $stmt->bind_param('s', $clienteCI);
+    $stmt->execute();
+    $stmt->bind_result($nombreCliente, $apellidoCliente);
+    
+    // Si el cliente no existe, insertar los datos del cliente
+    if (!$stmt->fetch()) {
+        // Datos del cliente enviados en la solicitud (ahora usamos clienteNombre y clienteApellido)
+        $nombreCliente = $data['clienteNombre'] ?? null;
+        $apellidoCliente = $data['clienteApellido'] ?? null;
+
+        if (!$nombreCliente || !$apellidoCliente) {
+            throw new Exception('Nombre o apellido del cliente faltantes');
+        }
+
+        // Insertar el cliente en la tabla PERSONA
+        $stmt->close(); // Cerrar la consulta anterior
+        $stmt = $mysqli->prepare("INSERT INTO PERSONA (ci, nombre, apellido) VALUES (?, ?, ?)");
+        $stmt->bind_param('sss', $clienteCI, $nombreCliente, $apellidoCliente);
+        
+        if (!$stmt->execute()) {
+            throw new Exception('Error al insertar la persona en la base de datos');
+        }
+
+        // Insertar el cliente en la tabla CLIENTE
+        $stmt->close(); // Cerrar la consulta anterior
+        $stmt = $mysqli->prepare("INSERT INTO CLIENTE (ci) VALUES (?)");
+        $stmt->bind_param('s', $clienteCI);
+        
+        if (!$stmt->execute()) {
+            throw new Exception('Error al insertar el cliente en la base de datos');
+        }
+    }
+
+    $stmt->close(); // Cerrar la consulta de verificación
+
     // Insertar la venta en la tabla VENTA
-    $stmt = $mysqli->prepare("INSERT INTO VENTA (fecha_venta, usuarioID, ci) VALUES (?, ?, ?)");
-    $stmt->bind_param('sis', $fechaVenta, $vendedorID, $clienteCI);
+    $stmt = $mysqli->prepare("INSERT INTO VENTA (fecha_venta, usuarioID, ci, nombre, apellido) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param('sisss', $fechaVenta, $vendedorID, $clienteCI, $nombreCliente, $apellidoCliente);
     
     if (!$stmt->execute()) {
         throw new Exception('Error al registrar la venta');
@@ -66,17 +103,17 @@ try {
         }
 
         // Restar la cantidad comprada del stock
-        $stmtUpdateStock = $mysqli->prepare("UPDATE PRODUCTO SET stock = stock - ? WHERE productoID = ?");
-        $stmtUpdateStock->bind_param('ii', $producto['cantidad'], $producto['productoID']);
+        $stmtActualizarInventario = $mysqli->prepare("UPDATE PRODUCTO SET stock = stock - ? WHERE productoID = ?");
+        $stmtActualizarInventario->bind_param('ii', $producto['cantidad'], $producto['productoID']);
         
-        if (!$stmtUpdateStock->execute()) {
+        if (!$stmtActualizarInventario->execute()) {
             throw new Exception('Error al actualizar el stock del producto');
         }
 
-        $stmtUpdateStock->close(); // Cerrar la consulta de actualización
+        $stmtActualizarInventario->close(); // Cerrar la consulta de actualización
     }
 
-$stmt->close(); // Cerrar la consulta de inserción
+    $stmt->close(); // Cerrar la consulta de inserción
 
     // Insertar el recibo en la tabla RECIBO
     $stmt = $mysqli->prepare("INSERT INTO RECIBO (ventaID, tipo_pago) VALUES (?, ?)");
