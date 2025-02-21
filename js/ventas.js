@@ -42,26 +42,32 @@ function agregarAlCarrito(event) {
     const productoID = button.getAttribute('data-id');
     const nombre = button.getAttribute('data-nombre');
     const precio = parseFloat(button.getAttribute('data-precio'));
+    const stock = parseInt(button.parentElement.querySelector('p:nth-of-type(2)').textContent.split(': ')[1]); // Obtener stock desde el DOM
 
-    // Verificar si el producto ya está en el carrito
     const productoExistente = carrito.find(item => item.productoID == productoID);
 
     if (productoExistente) {
-        // Si el producto ya está en el carrito, aumentar la cantidad
-        productoExistente.cantidad++;
+        if (productoExistente.cantidad < stock) {
+            productoExistente.cantidad++;
+        } else {
+            alert('No hay suficiente stock disponible para agregar más de este producto.');
+        }
     } else {
-        // Si no está en el carrito, agregarlo
-        carrito.push({
-            productoID: productoID,
-            nombre: nombre,
-            precio: precio,
-            cantidad: 1
-        });
+        if (stock > 0) {
+            carrito.push({
+                productoID: productoID,
+                nombre: nombre,
+                precio: precio,
+                cantidad: 1
+            });
+        } else {
+            alert('Este producto está agotado.');
+        }
     }
 
-    // Actualizar la vista del carrito y los totales
     actualizarCarrito();
 }
+
 
 // Función para actualizar la vista del carrito
 function actualizarCarrito() {
@@ -116,6 +122,7 @@ function generarReciboPDF(reciboID, productos, tipoPago) {
     doc.setFontSize(12);
     doc.text(`Fecha de Venta: ${fecha}`, 20, 40);
     doc.text(`Tipo de Pago: ${tipoPago}`, 20, 50);
+    doc.text(`ID del recibo: ${reciboID}`, 20, 100);
 
     // Tabla de productos
     doc.text('Productos Comprados:', 20, 60);
@@ -133,14 +140,27 @@ function generarReciboPDF(reciboID, productos, tipoPago) {
         y += 10;
     });
 
-    // Generar el PDF y abrirlo
+    // Mostrar PDF en una nueva ventana
     window.open(doc.output('bloburl'), '_blank');
+
+    // Generar el PDF y abrirlo doc.save(`recibo_${reciboID}.pdf`);
 }
 
 // Checkout
 document.getElementById('checkout').addEventListener('click', function() {
     if (carrito.length === 0) {
         alert('El carrito está vacío. No se puede realizar la venta.');
+        return;
+    }
+
+    // Obtener datos del cliente desde los campos de entrada
+    const clienteNombre = document.getElementById('cliente-nombre').value;
+    const clienteApellido = document.getElementById('cliente-apellido').value;
+    const clienteCI = document.getElementById('cliente-ci').value;
+    const tipoPago = document.getElementById('tipo-pago').value;
+
+    if (!clienteNombre || !clienteApellido || !clienteCI || !tipoPago) {
+        alert('Por favor, complete todos los campos del cliente y seleccione el tipo de pago.');
         return;
     }
 
@@ -152,12 +172,14 @@ document.getElementById('checkout').addEventListener('click', function() {
     }));
 
     // Obtener datos del cliente y del vendedor (esto puede venir de campos ocultos o de una sesión)
-    const clienteCI = '123456789';  // Debes obtener el CI del cliente
+    // const clienteCI = '123456789';  // Debes obtener el CI del cliente
     const vendedorID = 1;           // Debes obtener el ID del vendedor
-    const tipoPago = 'Efectivo';    // O 'Tarjeta' o 'Transferencia', dependiendo de la opción seleccionada
+    // const tipoPago = 'Efectivo';    // O 'Tarjeta' o 'Transferencia', dependiendo de la opción seleccionada
 
     // Crear objeto con los datos para enviar al servidor
     const ventaData = {
+        clienteNombre: clienteNombre,
+        clienteApellido: clienteApellido,
         clienteCI: clienteCI,
         vendedorID: vendedorID,
         tipoPago: tipoPago,
@@ -179,19 +201,23 @@ document.getElementById('checkout').addEventListener('click', function() {
     .then(data => {
         if (data.success) {
             alert('Venta realizada con éxito');
-            // Generar y mostrar el recibo en formato PDF
             generarReciboPDF(data.reciboID, carrito.map(item => ({
                 nombre: item.nombre,
                 cantidad: item.cantidad,
-                precio_unitario: item.precio // Asegurar que el nombre coincide
+                precio_unitario: item.precio
             })), tipoPago);
+            
             // Vaciar el carrito y actualizar la vista
             carrito = [];
             actualizarCarrito();
+    
+            // Recargar los productos para reflejar el stock actualizado
+            cargarProductos();
         } else {
             alert('Error al procesar la venta: ' + data.error);
         }
     })
+    
     .catch(error => {
         console.error('Error en el proceso de venta:', error);
         alert('Hubo un error al procesar la venta.');

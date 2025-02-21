@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuarioID'])) {
+    header("Location: ../index.html?error=Debe iniciar sesión");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +17,9 @@
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo">LOGO</div>
+        <div class="nav-logo-container">
+            <img src="../assets/images/logo.png" alt="nav-logo" class="nav-logo">
+        </div>
         <nav>
             <ul>
                 <li><a href="menu.html">Menú</a></li>
@@ -22,10 +32,10 @@
     </div>
     <main>
         <header>
-            <h1>Gestión de Ventas</h1>
+            <h1>HoneySales - Gestión de Ventas</h1>
             <div class="user-profile">
                 <span class="notification-icon">🔔</span>
-                <img src="../img/user.png" alt="Usuario" class="user-icon">
+                <img src="../assets/images/logo.png" alt="Usuario" class="user-icon">
             </div>
         </header>
         <section class="ventas-container">
@@ -35,6 +45,24 @@
             <div class="carrito">
                 <h2>Carrito</h2>
                 <ul id="carrito-lista"></ul>
+                <div class="cliente-info">
+                    <h3>Información del Cliente</h3>
+                    <label for="cliente-nombre">Nombre:</label>
+                    <input type="text" id="cliente-nombre" placeholder="Nombre del cliente" required>
+                    
+                    <label for="cliente-apellido">Apellido:</label>
+                    <input type="text" id="cliente-apellido" placeholder="Apellido del cliente" required>
+                    
+                    <label for="cliente-ci">Cédula:</label>
+                    <input type="text" id="cliente-ci" placeholder="Cédula de identidad" required>
+
+                    <label for="tipo-pago">Tipo de Pago:</label>
+                    <select id="tipo-pago" required>
+                        <option value="">Seleccione un método</option>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Pago Móvil">Pago Móvil</option>
+                    </select>
+                </div>
                 <div class="resumen">
                     <p>Subtotal: <span id="subtotal">$0.00</span></p>
                     <p>Total: <span id="total">$0.00</span></p>
