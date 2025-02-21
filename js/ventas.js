@@ -142,9 +142,10 @@ function generarReciboPDF(reciboID, productos, tipoPago) {
     });
 
     // Mostrar PDF en una nueva ventana
-    window.open(doc.output('bloburl'), '_blank');
+    // window.open(doc.output('bloburl'), '_blank');
 
-    // Generar el PDF y abrirlo doc.save(`recibo_${reciboID}.pdf`);
+    //Generar el PDF y abrirlo
+    doc.save(`recibo_${reciboID}.pdf`);
 }
 
 // Checkout

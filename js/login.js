@@ -1,8 +1,6 @@
+// En el archivo login.js
 function togglePassword() {
-    const passwordInput = document.getElementById("contraseña");
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-    } else {
-        passwordInput.type = "password";
-    }
+    var passwordField = document.getElementById("contraseña");
+    var type = passwordField.type === "password" ? "text" : "password";
+    passwordField.type = type;
 }

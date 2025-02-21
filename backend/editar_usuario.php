@@ -46,10 +46,10 @@ if (!$user) {
         </div>
         <nav>
             <ul>
-                <li><a href="menu.html">Menú</a></li>
-                <li><a href="ventas.html">Ventas</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="usuarios.html">Usuarios</a></li>
+                <li><a href="../pages/menu.html">Menú</a></li>
+                <li><a href="../pages/ventas.html">Ventas</a></li>
+                <li><a href="../pages/inventario.html">Inventario</a></li>
+                <li><a href="../pages/usuarios.html">Usuarios</a></li>
             </ul>
         </nav>
         <button class="logout">Cerrar sesión</button>

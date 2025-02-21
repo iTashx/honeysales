@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo->commit();
 
         // Redirigir a la página de gestión de usuarios con un mensaje de éxito
-        header("Location: usuarios.html?success=1");
+        header("Location: ../pages/usuarios.html?success=1");
         exit();
 
     } catch (PDOException $e) {
