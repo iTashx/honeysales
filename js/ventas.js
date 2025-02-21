@@ -102,6 +102,41 @@ function eliminarProducto(event) {
     actualizarCarrito();
 }
 
+// Generar recibo PDF
+function generarReciboPDF(reciboID, productos, tipoPago) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Título del recibo
+    doc.setFontSize(16);
+    doc.text('Recibo de Venta', 105, 20, { align: 'center' });
+
+    // Fecha, tipo de pago y detalles de la venta
+    const fecha = new Date().toLocaleString();
+    doc.setFontSize(12);
+    doc.text(`Fecha de Venta: ${fecha}`, 20, 40);
+    doc.text(`Tipo de Pago: ${tipoPago}`, 20, 50);
+
+    // Tabla de productos
+    doc.text('Productos Comprados:', 20, 60);
+    doc.text('Producto', 20, 70);
+    doc.text('Cantidad', 100, 70);
+    doc.text('Precio Unitario', 140, 70);
+    doc.setFontSize(10);
+
+    let y = 80;
+    productos.forEach(producto => {
+        const precio = producto.precio_unitario ? producto.precio_unitario.toFixed(2) : "0.00";
+        doc.text(producto.nombre, 20, y);
+        doc.text(producto.cantidad.toString(), 100, y);
+        doc.text('$' + precio, 140, y);
+        y += 10;
+    });
+
+    // Generar el PDF y abrirlo
+    window.open(doc.output('bloburl'), '_blank');
+}
+
 // Checkout
 document.getElementById('checkout').addEventListener('click', function() {
     if (carrito.length === 0) {
@@ -145,7 +180,11 @@ document.getElementById('checkout').addEventListener('click', function() {
         if (data.success) {
             alert('Venta realizada con éxito');
             // Generar y mostrar el recibo en formato PDF
-            window.open('../backend/generar_recibo_pdf.php?reciboID=' + data.reciboID, '_blank');
+            generarReciboPDF(data.reciboID, carrito.map(item => ({
+                nombre: item.nombre,
+                cantidad: item.cantidad,
+                precio_unitario: item.precio // Asegurar que el nombre coincide
+            })), tipoPago);
             // Vaciar el carrito y actualizar la vista
             carrito = [];
             actualizarCarrito();
@@ -158,94 +197,6 @@ document.getElementById('checkout').addEventListener('click', function() {
         alert('Hubo un error al procesar la venta.');
     });
 });
-
-// Generar recibo PDF
-document.getElementById('checkout').addEventListener('click', function() {
-    if (carrito.length === 0) {
-        alert('El carrito está vacío. No se puede realizar la venta.');
-        return;
-    }
-
-    // Recolectar los datos del carrito
-    const productosCarrito = carrito.map(item => ({
-        productoID: item.productoID,
-        cantidad: item.cantidad,
-        precio_unitario: item.precio
-    }));
-
-    // Obtener datos del cliente y del vendedor (esto puede venir de campos ocultos o de una sesión)
-    const clienteCI = '123456789';  // Debes obtener el CI del cliente
-    const vendedorID = 1;           // Debes obtener el ID del vendedor
-    const tipoPago = 'Efectivo';    // O 'Tarjeta' o 'Transferencia', dependiendo de la opción seleccionada
-
-    // Crear objeto con los datos para enviar al servidor
-    const ventaData = {
-        clienteCI: clienteCI,
-        vendedorID: vendedorID,
-        tipoPago: tipoPago,
-        productos: productosCarrito
-    };
-
-    // Enviar los datos al servidor para procesar la venta
-    fetch('../backend/procesar_venta.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(ventaData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Venta realizada con éxito');
-            // Generar y mostrar el recibo en formato PDF usando jsPDF
-            generarReciboPDF(data.reciboID, productosCarrito, tipoPago);
-            // Vaciar el carrito y actualizar la vista
-            carrito = [];
-            actualizarCarrito();
-        } else {
-            alert('Error al procesar la venta: ' + data.error);
-        }
-    })
-    .catch(error => {
-        console.error('Error en el proceso de venta:', error);
-        alert('Hubo un error al procesar la venta.');
-    });
-});
-
-function generarReciboPDF(reciboID, productos, tipoPago) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // Título del recibo
-    doc.setFontSize(16);
-    doc.text('Recibo de Venta', 105, 20, { align: 'center' });
-
-    // Fecha, tipo de pago y detalles de la venta
-    const fecha = new Date().toLocaleString();
-    doc.setFontSize(12);
-    doc.text(`Fecha de Venta: ${fecha}`, 20, 40);
-    doc.text(`Tipo de Pago: ${tipoPago}`, 20, 50);
-
-    // Tabla de productos
-    doc.text('Productos Comprados:', 20, 60);
-    doc.text('Producto', 20, 70);
-    doc.text('Cantidad', 100, 70);
-    doc.text('Precio Unitario', 140, 70);
-    doc.setFontSize(10);
-
-    let y = 80;
-    productos.forEach(producto => {
-        doc.text(producto.nombre, 20, y);
-        doc.text(producto.cantidad.toString(), 100, y);
-        doc.text('$' + producto.precio_unitario.toFixed(2), 140, y);
-        y += 10;
-    });
-
-    // Generar el PDF y abrirlo
-    doc.save(`recibo_${reciboID}.pdf`);
-}
-
 
 // Asegurarnos de que el DOM esté completamente cargado antes de ejecutar el script
 document.addEventListener('DOMContentLoaded', function () {
