@@ -69,6 +69,7 @@ function agregarAlCarrito(event) {
 }
 
 
+
 // Función para actualizar la vista del carrito
 function actualizarCarrito() {
     const carritoLista = document.getElementById('carrito-lista');

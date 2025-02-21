@@ -53,7 +53,7 @@ try {
 
     // Insertar los productos de la venta en la tabla VENTA_PRODUCTO
     $stmt = $mysqli->prepare("INSERT INTO VENTA_PRODUCTO (ventaID, productoID, cantidad_producto, precio_unitario) VALUES (?, ?, ?, ?)");
-    
+
     foreach ($productos as $producto) {
         if (!isset($producto['productoID'], $producto['cantidad'], $producto['precio_unitario'])) {
             throw new Exception('Error en los datos del producto');
@@ -64,8 +64,19 @@ try {
         if (!$stmt->execute()) {
             throw new Exception('Error al insertar un producto en la venta');
         }
+
+        // Restar la cantidad comprada del stock
+        $stmtUpdateStock = $mysqli->prepare("UPDATE PRODUCTO SET stock = stock - ? WHERE productoID = ?");
+        $stmtUpdateStock->bind_param('ii', $producto['cantidad'], $producto['productoID']);
+        
+        if (!$stmtUpdateStock->execute()) {
+            throw new Exception('Error al actualizar el stock del producto');
+        }
+
+        $stmtUpdateStock->close(); // Cerrar la consulta de actualización
     }
-    $stmt->close(); // Cerrar la consulta
+
+$stmt->close(); // Cerrar la consulta de inserción
 
     // Insertar el recibo en la tabla RECIBO
     $stmt = $mysqli->prepare("INSERT INTO RECIBO (ventaID, tipo_pago) VALUES (?, ?)");
