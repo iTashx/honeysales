@@ -4,7 +4,7 @@ let subtotal = 0;
 
 // Función para obtener los productos y mostrarlos en el HTML
 function cargarProductos() {
-    fetch('../backend/obtener_productos.php')
+    fetch('../backend/obtener_productos_ventas.php')
         .then(response => response.json())
         .then(productos => {
             const productosLista = document.getElementById('productos-lista');

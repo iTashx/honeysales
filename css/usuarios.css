@@ -1,0 +1,113 @@
+/* Estilos generales */
+html {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    margin: 0;
+    height: 100%;
+    background-color: #e6e8a3;
+}
+
+/* Barra lateral */
+.sidebar {
+    width: 150px;
+    background-color: #f4b400;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+.nav-logo {
+    width: 100px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+nav ul li {
+    margin: 10px 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    display: block;
+    text-align: center;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+nav ul li.active a {
+    background-color: black;
+}
+
+.logout {
+    margin-top: auto;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Contenido principal */
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column wrap;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+#add-product-btn {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}

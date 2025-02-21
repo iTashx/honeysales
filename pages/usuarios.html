@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="../css/usuarios.css">
+    <script src="../js/usuarios.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="nav-logo-container">
+            <img src="../assets/images/logo.png" alt="nav-logo" class="nav-logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="ventas.html">Ventas</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li class="active"><a href="usuarios.html">Usuarios</a></li>
+            </ul>
+        </nav>
+        <button class="logout">Cerrar sesión</button>
+    </div>
+    
+    <div class="content">
+        <h1>Gestión de Usuarios</h1>
+        <button id="add-product-btn" onclick="window.location.href='añadir_usuario.html'">Añadir nuevo usuario</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Cédula</th>
+                    <th>Nombre de usuario</th>
+                    <th>Email</th>
+                    <th>Rol</th> <!-- Nueva columna para el rol -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="users-table-body">
+                <!-- Los usuarios se cargarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

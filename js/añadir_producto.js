@@ -1,47 +1,27 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById("productoForm");
+// Función para manejar el envío del formulario
+document.getElementById('add-product-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevenir que se recargue la página
 
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-        
-        const nombre = document.getElementById("nombre").value.trim();
-        const descripcion = document.getElementById("descripcion").value.trim();
-        const precio = document.getElementById("precio").value.trim();
-        const stock = document.getElementById("stock").value.trim();
-        
-        if (nombre === "" || precio === "" || stock === "") {
-            alert("Por favor, complete los campos obligatorios.");
-            return;
+    // Obtener los datos del formulario
+    const nombre = document.getElementById('nombre').value;
+    const descripcion = document.getElementById('descripcion').value;
+    const precio = document.getElementById('precio').value;
+    const stock = document.getElementById('stock').value;
+
+    // Enviar los datos al servidor
+    fetch('../backend/añadir_producto.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `nombre=${nombre}&descripcion=${descripcion}&precio=${precio}&stock=${stock}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Mostrar la respuesta del servidor
+        if (data === 'Producto añadido correctamente') {
+            window.location.href = 'inventario.html'; // Redirigir al inventario
         }
-        
-        if (isNaN(precio) || parseFloat(precio) <= 0) {
-            alert("El precio debe ser un número válido y mayor a 0.");
-            return;
-        }
-        
-        if (isNaN(stock) || parseInt(stock) < 0) {
-            alert("El stock debe ser un número válido y mayor o igual a 0.");
-            return;
-        }
-        
-        const formData = new FormData(form);
-        
-        fetch("procesar_producto.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Producto añadido correctamente.");
-                form.reset();
-            } else {
-                alert("Error al añadir producto: " + data.message);
-            }
-        })
-        .catch(error => {
-            alert("Ocurrió un error en la solicitud.");
-            console.error(error);
-        });
-    });
+    })
+    .catch(error => console.error('Error al añadir producto:', error));
 });
