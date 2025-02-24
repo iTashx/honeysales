@@ -94,4 +94,16 @@ function eliminarUsuario($pdo, $usuarioID) {
     $stmt = $pdo->prepare("DELETE FROM Usuario WHERE usuarioID = ?");
     return $stmt->execute([$usuarioID]);
 }
+
+// Archivo de prueba
+include 'conexion.php';
+
+// Intenta una consulta simple
+try {
+    $stmt = $pdo->query("SELECT * FROM USUARIO LIMIT 1");
+    $result = $stmt->fetch();
+    var_dump($result);
+} catch (PDOException $e) {
+    echo "Error en la consulta: " . $e->getMessage();
+}
 ?>
