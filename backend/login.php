@@ -1,5 +1,8 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $host = 'localhost';
 $dbname = 'honeysalesdb';
 $usernameDB = 'root';
@@ -10,34 +13,35 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ]);
-} catch (PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
-}
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = trim($_POST["username"]);
-    $password = trim($_POST["contraseña"]);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $username = isset($_POST["username"]) ? trim($_POST["username"]) : '';
+        $password = isset($_POST["password"]) ? trim($_POST["password"]) : '';
 
-    if (!empty($username) && !empty($password)) {
-        // Verificar si el usuario existe
-        $stmt = $pdo->prepare("SELECT usuarioID, username, contraseña FROM USUARIO WHERE username = :username");
-        $stmt->bindParam(":username", $username);
-        $stmt->execute();
-        $user = $stmt->fetch();
+        if (!empty($username) && !empty($password)) {
+            $stmt = $pdo->prepare("SELECT usuarioID, username, contraseña FROM USUARIO WHERE username = :username");
+            $stmt->bindParam(":username", $username);
+            $stmt->execute();
+            $user = $stmt->fetch();
 
-        if ($user && password_verify($password, $user["contraseña"])) {
-            $_SESSION["usuarioID"] = $user["usuarioID"];
-            $_SESSION["username"] = $user["username"];
-            
-            // Redirigir al menú principal
-            header("Location: ../pages/menu.html");
-            exit();
+            if ($user && password_verify($password, $user["contraseña"])) {
+                $_SESSION["usuarioID"] = $user["usuarioID"];
+                $_SESSION["username"] = $user["username"];
+                
+                header("Location: ../pages/menu.html");
+                exit();
+            } else {
+                header("Location: ../pages/login.html?error=invalid");
+                exit();
+            }
         } else {
-            $error = "Usuario o contraseña incorrectos.";
+            header("Location: ../pages/login.html?error=empty");
+            exit();
         }
-    } else {
-        $error = "Por favor, complete todos los campos.";
     }
+} catch (PDOException $e) {
+    header("Location: ../pages/login.html?error=database");
+    exit();
 }
 ?>
 
