@@ -4,48 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesión</title>
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="../css/login.css">
-    <script defer src="../js/login.js"></script>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">
             <img src="../assets/images/logo.png" alt="Logo">
         </div>
-        <h2>Iniciar sesión</h2>
-        <p id="error-message" style="color: red;"></p>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const errorMessage = urlParams.get("error");
-                if (errorMessage) {
-                    document.getElementById("error-message").textContent = decodeURIComponent(errorMessage);
-                }
-            });
-        </script>
         
-        <p>Ingrese sus credenciales para continuar</p>
         <form action="../backend/login.php" method="POST">
-            <label for="username">Usuario</label>
-            <input type="text" id="username" name="username" placeholder="Ingrese su nombre de usuario" required>
+            <div class="input-group">
+                <input type="text" name="username" placeholder="Usuario" required>
+            </div>
 
-            <label for="contraseña">Contraseña</label>
             <div class="password-container">
-                <input type="password" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
                 <span class="eye-icon" onclick="togglePassword()"></span>
             </div>
 
             <div class="options">
                 <label>
-                    <input type="checkbox" id="remember"> Recordarme
+                    <input type="checkbox"> Recordarme
                 </label>
-                <a href="../backend/recuperar_contraseña.php" class="forgot-password">¿Olvidó su contraseña?</a>
+                <a href="../backend/recuperar-password.php" class="forgot-password" target="_blank">¿Olvidaste tu contraseña?</a>
             </div>
 
-            <button type="submit">Iniciar sesión</button>
+            <button type="submit">Iniciar Sesión</button>
         </form>
     </div>
+
+    <script src="../js/login.js"></script>
 </body>
 </html>
